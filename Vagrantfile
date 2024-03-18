@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "master" do |master|
     master.vm.box = "bento/ubuntu-22.04"
     master.vm.hostname = "master"
-    master.vm.network "private_network", ip: "10.10.10.#{conf["ip"]}"
+    master.vm.network "private_network", ip: "10.10.10.1#{i+1}"
     master.vm.provider "vmware_workstation" do |v|
       v.vmx["displayName"] = "Master"
     end
