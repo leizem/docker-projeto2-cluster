@@ -1,34 +1,35 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby  :
+# vi: set ft=ruby :
 
-machines = {
-  "master" => {"memory" => "1024", "cpu" => "1", "ip" => "100", "image" => "bento/ubuntu-22.04"},
-  "node01" => {"memory" => "1024", "cpu" => "1", "ip" => "101", "image" => "bento/ubuntu-22.04"},
-  "node02" => {"memory" => "1024", "cpu" => "1", "ip" => "102", "image" => "bento/ubuntu-22.04"},
-  "node03" => {"memory" => "1024", "cpu" => "1", "ip" => "103", "image" => "bento/ubuntu-22.04"}
-}
-
+# Define the Vagrant environment
 Vagrant.configure("2") do |config|
 
-  machines.each do |name, conf|
-    config.vm.define "#{name}" do |machine|
-      machine.vm.box = "#{conf["image"]}"
-      machine.vm.hostname = "#{name}"
-      machine.vm.network "private_network", ip: "10.10.10.#{conf["ip"]}"
-      machine.vm.provider "vmware_desktop" do |vb|
-        vb.name = "#{name}"
-        vb.memory = conf["memory"]
-        vb.cpus = conf["cpu"]
-        
-      end
-      machine.vm.provision "shell", path: "docker.sh"
-      
-      if "#{name}" == "master"
-        machine.vm.provision "shell", path: "master.sh"
-      else
-        machine.vm.provision "shell", path: "worker.sh"
-      end
+  # Using VMware Workstation provider
+  config.vm.provider "vmware_workstation" do |v|
+    v.vmx["numvcpus"] = "2" # Number of CPUs for each VM
+    v.vmx["memsize"] = "2048" # Memory size for each VM in MB
+  end
 
+  # Create the first VM, which will be the "master" node
+  config.vm.define "master" do |master|
+    master.vm.box = "bento/ubuntu-22.04"
+    master.vm.hostname = "master"
+    master.vm.network "private_network", ip: "10.10.10.#{conf["ip"]}"
+    master.vm.provider "vmware_workstation" do |v|
+      v.vmx["displayName"] = "Master"
     end
   end
+
+  # Create three additional VMs
+  (1..3).each do |i|
+    config.vm.define "node#{i}" do |node|
+      node.vm.box = "bento/ubuntu-22.04"
+      node.vm.hostname = "node#{i}"
+      node.vm.network "private_network", ip: "10.10.10.1#{i+1}"
+      node.vm.provider "vmware_workstation" do |v|
+        v.vmx["displayName"] = "Node#{i}"
+      end
+    end
+  end
+
 end
