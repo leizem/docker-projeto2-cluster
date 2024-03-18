@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
       machine.vm.box = "#{conf["image"]}"
       machine.vm.hostname = "#{name}"
       machine.vm.network "private_network", ip: "10.10.10.#{conf["ip"]}"
-      machine.vm.provider "vmware_workstation" do |vb|
+      machine.vm.provider "vmware_desktop" do |vb|
         vb.name = "#{name}"
         vb.memory = conf["memory"]
         vb.cpus = conf["cpu"]
