@@ -5,7 +5,7 @@
 Vagrant.configure("2") do |config|
 
   # Using VMware Workstation provider
-  config.vm.provider "vmware_workstation" vagrant up --provider vmware_workstation do |v|
+  config.vm.provider "vmware_desktop" do |v|
     v.vmx["numvcpus"] = "1" # Number of CPUs for each VM
     v.vmx["memsize"] = "1024" # Memory size for each VM in MB
   end
@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
     master.vm.box = "bento/ubuntu-22.04"
     master.vm.hostname = "master"
     master.vm.network "private_network", ip: "10.10.10.10"
-    master.vm.provider "vmware_workstation" do vagrant up --provider vmware_workstation |v|
+    master.vm.provider "vmware_desktop" do |v|
       v.vmx["displayName"] = "Master"
     end
   end
@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
       node.vm.box = "bento/ubuntu-22.04"
       node.vm.hostname = "node#{i}"
       node.vm.network "private_network", ip: "10.10.10.1#{i+1}"
-      node.vm.provider "vmware_workstation" vagrant up --provider vmware_workstation do |v|
+      node.vm.provider "vmware_desktop" do |v|
         v.vmx["displayName"] = "Node#{i}"
       end
     end
