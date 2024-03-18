@@ -6,8 +6,8 @@ Vagrant.configure("2") do |config|
 
   # Using VMware Workstation provider
   config.vm.provider "vmware_workstation" do |v|
-    v.vmx["numvcpus"] = "2" # Number of CPUs for each VM
-    v.vmx["memsize"] = "2048" # Memory size for each VM in MB
+    v.vmx["numvcpus"] = "1" # Number of CPUs for each VM
+    v.vmx["memsize"] = "1024" # Memory size for each VM in MB
   end
 
   # Create the first VM, which will be the "master" node
