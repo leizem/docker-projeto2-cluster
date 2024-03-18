@@ -4,10 +4,10 @@
 # Define the Vagrant environment
 Vagrant.configure("2") do |config|
 
-  # Using VMware Workstation provider
+  # Using VMware Workstation provider for all VMs
   config.vm.provider "vmware_desktop" do |v|
-    v.vmx["numvcpus"] = "1" 
-    v.vmx["memsize"] = "1024" 
+    v.vmx["memsize"] = "1024"
+    v.vmx["numvcpus"] = "1"
   end
   
   # Create the first VM, which will be the "master" node
